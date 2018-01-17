@@ -37,13 +37,13 @@ void ExclusiveHooks::ResetShowers(const Pythia8::Event& event)
 
   proc->topo.nEm = 0;
 
-	proc->RemoveShowers();
+  proc->RemoveShowers();
 
   lastEmScale = pyth->info.QRen();
   NormalSplittings = 1;
 
-	weightEx = 1;
-	nMPI = 0;
+  weightEx = 1;
+  nMPI = 0;
 
   if( pyth->info.QRen() > ExclusiveCut) {
     isExclusive = true;
@@ -62,11 +62,13 @@ void ExclusiveHooks::ResetShowers(const Pythia8::Event& event)
 bool ExclusiveHooks::doVetoISREmission( int sizeOld, const Pythia8::Event& event, int )
 {
 	//reset shower information if needed
+    cout << "I am here before " << endl;
 	ResetShowers(event);
 
 	if(isSmallPt)
 		return true;
 
+    cout << "I am here after " << endl;
 
 	//cout << "counter " << pyth->info.getCounter(3) << endl;
 	if( isExclusive && weightEx != 1 ) {
@@ -108,12 +110,6 @@ bool ExclusiveHooks::doVetoISREmission( int sizeOld, const Pythia8::Event& event
 
 	int idEm   = event[idOrg].daughter1();
 	int idDaug = event[idOrg].daughter2();
-
-
-
-
-
-
 
 
 
@@ -806,6 +802,7 @@ Double ExclusiveHooks::GetExclusiveWeight(Double M, Double y, Double Mju, Double
   //cout << "ExLum  " << ExLum[0]  <<" "<<ExLum[1]  <<" "<<ExLum[2] << endl;
   //cout << "ExLumC " << ExLumC[0] <<" "<<ExLumC[1] <<" "<<ExLumC[2] << endl;
 
+  cout << "RADEK normal " << NormalSplittings << endl;
 
   Double IncLum = kmr->LuminosityInc(id1, M, y, Mju);
 
@@ -815,7 +812,7 @@ Double ExclusiveHooks::GetExclusiveWeight(Double M, Double y, Double Mju, Double
   //Double mySing = proc->CrossSection(true, true) /64./4.;
   //Double myInc  = proc->CrossSection(false, false) /64./4.;
 	//cout << "Cross sections Ratio " << proc->PyCrossSection() / myInc <<" "<< endl;//mySing<< endl;
-	cout << "Cross sections Ratio " << (InclusiveXsec/IncLum) / myInc <<" "<< endl;//mySing<< endl;
+	//cout << "Cross sections Ratio " << (InclusiveXsec/IncLum) / myInc <<" "<< endl;//mySing<< endl;
 
 
   lumiFrac = (ExLum[0]*ExLumC[0]).real()/IncLum ;

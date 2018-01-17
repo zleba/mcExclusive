@@ -1,0 +1,11 @@
+pythInc = 
+pythLib = 
+
+ifeq ("$(wildcard $(pythInc)/Pythia8/Pythia.h)","")
+    $(error Wrong destination: $(pythInc) for the Pythia includes)
+endif
+
+ifeq ("$(wildcard $(pythLib)/libpythia8.a)","")
+    $(error Wrong destination: $(pythLib) for the Pythia library)
+endif
+

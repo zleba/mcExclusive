@@ -1,10 +1,9 @@
-INCpyth = /home/radek/Dropbox/Lund/mcnet/pythia8New/pythia8212/include/
+include pythPath
+
 
 CC=g++
-CFLAGS=-g -MMD -MP -I./inc  -I$(INCpyth)  \
+CFLAGS=-g -MMD -MP -I./inc  -I$(pythInc)  \
                       -ansi -pedantic -W  -fPIC 
-
-
 
 
 DEPS = inc/ColorTensor.h inc/ColorData.h inc/SpinTensor.h inc/ExclusiveHooks.h  \
