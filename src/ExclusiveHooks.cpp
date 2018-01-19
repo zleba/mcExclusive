@@ -62,13 +62,11 @@ void ExclusiveHooks::ResetShowers(const Pythia8::Event& event)
 bool ExclusiveHooks::doVetoISREmission( int sizeOld, const Pythia8::Event& event, int )
 {
 	//reset shower information if needed
-    cout << "I am here before " << endl;
 	ResetShowers(event);
 
 	if(isSmallPt)
 		return true;
 
-    cout << "I am here after " << endl;
 
 	//cout << "counter " << pyth->info.getCounter(3) << endl;
 	if( isExclusive && weightEx != 1 ) {
@@ -150,9 +148,9 @@ bool ExclusiveHooks::doVetoISREmission( int sizeOld, const Pythia8::Event& event
 }
 
 
-ExclusiveHooks::ExclusiveHooks(Pythia8::Pythia *py, bool _withoutEmissions)
+ExclusiveHooks::ExclusiveHooks(Pythia8::Pythia *py, Double _bSlope) : bSlope(_bSlope)
 {
-	pyth = py;
+  pyth = py;
 
   pyth->settings.forceParm("SpaceShower:pT0Ref", 0.0);//change
 
@@ -163,7 +161,7 @@ ExclusiveHooks::ExclusiveHooks(Pythia8::Pythia *py, bool _withoutEmissions)
 
 
   pyth->readString("SpaceShower:rapidityOrder = off");
-	pyth->readString("SpaceShower:phiPolAsym = off");
+  pyth->readString("SpaceShower:phiPolAsym = off");
   pyth->readString("SpaceShower:MEcorrections = off");
   pyth->readString("SpaceShower:phiIntAsym = off");
 
@@ -184,7 +182,7 @@ ExclusiveHooks::ExclusiveHooks(Pythia8::Pythia *py, bool _withoutEmissions)
 
 	ExclusiveCut = 5;
 
-	WithoutEmissions = _withoutEmissions;
+	WithoutEmissions = true; //default value
 
 
 	procs[111] = new Sigma2gg2gg;
@@ -226,37 +224,43 @@ ExclusiveHooks::ExclusiveHooks(Pythia8::Pythia *py, bool _withoutEmissions)
 
 bool ExclusiveHooks::initAfterBeams()
 {
-	Double alphaSMZ = settingsPtr->parm("SpaceShower:alphaSvalue");
+    Double alphaSMZ = settingsPtr->parm("SpaceShower:alphaSvalue");
 
-	int alphaSorder = settingsPtr->mode("SpaceShower:alphaSorder ");
+    int alphaSorder = settingsPtr->mode("SpaceShower:alphaSorder ");
 
-	if(alphaSorder != 1) {
-		cout << "Please set order of alphaS to 1" << endl;
-		exit(1);
-	}
+    bool isISR = settingsPtr->flag("PartonLevel:ISR");
+    //cout << "ISR is " << isISR << endl;
+    WithoutEmissions = !isISR;
 
-	const Double MCMIN  = 1.2;
-	const Double MBMIN  = 4.0;
-	Double  mc = max( MCMIN, particleDataPtr->m0(4));
-	Double  mb = max( MBMIN, particleDataPtr->m0(5));
+    //exit(0);
 
-  HEPinfo::Init(particleDataPtr, coupSMPtr );
+    if(alphaSorder != 1) {
+        cout << "Please set order of alphaS to 1" << endl;
+        exit(1);
+    }
 
+    const Double MCMIN  = 1.2;
+    const Double MBMIN  = 4.0;
+    Double  mc = max( MCMIN, particleDataPtr->m0(4));
+    Double  mb = max( MBMIN, particleDataPtr->m0(5));
 
-	Double sqrtS;
-	int BeamMode = settingsPtr->mode("Beams:frameType");
-	if(BeamMode == 1) {
-		sqrtS = settingsPtr->parm("Beams:eCM");
-	}
-	else if(BeamMode == 2) {
-		sqrtS = 2*sqrt(settingsPtr->parm("Beams:eA") * settingsPtr->parm("Beams:eB") );
-	}
-  ExclusiveCut = settingsPtr->parm("SpaceShower:pTmin");
+    HEPinfo::Init(particleDataPtr, coupSMPtr );
 
 
-	kmr = new KMRlumi(sqrtS, 0.8, alphaSMZ, mc, mb, beamAPtr );
+    Double sqrtS;
+    int BeamMode = settingsPtr->mode("Beams:frameType");
+    if(BeamMode == 1) {
+        sqrtS = settingsPtr->parm("Beams:eCM");
+    }
+    else if(BeamMode == 2) {
+        sqrtS = 2*sqrt(settingsPtr->parm("Beams:eA") * settingsPtr->parm("Beams:eB") );
+    }
+    ExclusiveCut = settingsPtr->parm("SpaceShower:pTmin");
 
-	return true;
+
+    kmr = new KMRlumi(sqrtS, 0.8, alphaSMZ, mc, mb, bSlope, beamAPtr, rndmPtr);
+
+    return true;
 }
 
 
@@ -802,7 +806,7 @@ Double ExclusiveHooks::GetExclusiveWeight(Double M, Double y, Double Mju, Double
   //cout << "ExLum  " << ExLum[0]  <<" "<<ExLum[1]  <<" "<<ExLum[2] << endl;
   //cout << "ExLumC " << ExLumC[0] <<" "<<ExLumC[1] <<" "<<ExLumC[2] << endl;
 
-  cout << "RADEK normal " << NormalSplittings << endl;
+  //cout << "RADEK normal " << NormalSplittings << endl;
 
   Double IncLum = kmr->LuminosityInc(id1, M, y, Mju);
 

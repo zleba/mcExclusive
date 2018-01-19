@@ -1,12 +1,14 @@
 #include "KMRlumi.h"
 
 
+Pythia8::Rndm *KMRlumi::rndmPtr = NULL;
+
 //KMR initialisation
-KMRlumi::KMRlumi(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb, Pythia8::BeamParticle *_beamPtr )
+KMRlumi::KMRlumi(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb, Double _bSlope, Pythia8::BeamParticle *_beamPtr, Pythia8::Rndm  *_rndmPtr)
 {
   s= sqrtS*sqrtS;
 
-  bSlope = 4;
+  bSlope = _bSlope;
 
   MinQt2 = qMin*qMin;   //Minimum for the Integration
 
@@ -38,13 +40,15 @@ KMRlumi::KMRlumi(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb,
   //MinQ2PDF = 1; //good to know
  //LnMinQ2PDF = log(MinQ2PDF);
   beamPtr = _beamPtr;
+  rndmPtr = _rndmPtr;
 }
 
 
 
 inline Double KMRlumi::Uniform(Double a, Double b)
 {
-  return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  //return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  return (  a +  (b-a) * rndmPtr->flat() );
   //return (  a +  (b-a) * MyRand() );
 
 }

@@ -28,7 +28,7 @@ obj/%.o: src/%.cpp
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 lib/libExclusive.so: $(OBJS)
-	$(CXX) -shared $^ -o $@ -Wl,--whole-archive  -Wl,--no-whole-archive
+	$(CXX) -shared $^ -o $@ -Wl,--whole-archive   -Wl,--no-whole-archive 
 
 
 

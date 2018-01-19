@@ -1,12 +1,13 @@
 #include "SigmaQCD.h"
-
+#include "KMRlumi.h"
 
 
 
 
 inline Double Uniform(Double a, Double b)
 {
-  return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  //return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  return KMRlumi::Uniform(a,b);
 
 }
 

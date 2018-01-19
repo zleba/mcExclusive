@@ -19,9 +19,9 @@ struct Branch;
 class ExclusiveHooks : public Pythia8::UserHooks{
 
   public:
-  ExclusiveHooks(Pythia8::Pythia *py, bool _withoutEmissions);
+  ExclusiveHooks(Pythia8::Pythia *py, Double _bSlope = 4.0);
 
-	void ModifyParameters(int procId, int pRest, int p0, int p1, int p2);
+  void ModifyParameters(int procId, int pRest, int p0, int p1, int p2);
 
   virtual bool initAfterBeams();
 
@@ -33,25 +33,25 @@ class ExclusiveHooks : public Pythia8::UserHooks{
   virtual bool canReconnectResonanceSystems() { return  true; }
   virtual bool doReconnectResonanceSystems(int oldSizeEvent, Pythia8::Event& event);
 
-	virtual bool canVetoStep() { return true; }
-	virtual int numberVetoStep() { return 1; }
-	virtual bool doVetoStep(int iPos, int nISR, int nFSR, const Pythia8::Event& event) {
-        (void)iPos; (void)nFSR; (void)event; //Unused
-		//cout <<"RADEK "<< iPos <<" "<< nISR << " " << nFSR << endl;
-		//cout << "radecek " << event.size() <<" "<<isSmallPt<<" "<< nISR << endl;
-		//return false;
-		const Double prescale = 1;
-		if(nISR == 1) {
-			weightEx *= prescale;
-			if(KMRlumi::Uniform(0,1) <1./prescale)
-				return false;
-			else {
-				//cout << "Exiting" << endl;
-				return true;
-			}
-		}
-		return false;
-	}
+  virtual bool canVetoStep() { return true; }
+  virtual int numberVetoStep() { return 1; }
+  virtual bool doVetoStep(int iPos, int nISR, int nFSR, const Pythia8::Event& event) {
+      (void)iPos; (void)nFSR; (void)event; //Unused
+      //cout <<"RADEK "<< iPos <<" "<< nISR << " " << nFSR << endl;
+      //cout << "radecek " << event.size() <<" "<<isSmallPt<<" "<< nISR << endl;
+      //return false;
+      const Double prescale = 1;
+      if(nISR == 1) {
+          weightEx *= prescale;
+          if(KMRlumi::Uniform(0,1) <1./prescale)
+              return false;
+          else {
+              //cout << "Exiting" << endl;
+              return true;
+          }
+      }
+      return false;
+  }
 	
   virtual bool canVetoMPIEmission() { return true; }
 
@@ -77,10 +77,10 @@ class ExclusiveHooks : public Pythia8::UserHooks{
   inline bool IsExclusive() const { return isExclusive; }
   inline Double ExclusiveWeight() const { return weightEx; }
   inline int GetnMPI() const { return nMPI;}
-	inline int GetId1() const { return id1;}
+  inline int GetId1() const { return id1;}
 
-	inline void EventParams(int &_nEm, Double &_a) { _nEm=TopoSel.nEm; _a=TopoSel.a; }
-	void PrintBestParams() {
+  inline void EventParams(int &_nEm, Double &_a) { _nEm=TopoSel.nEm; _a=TopoSel.a; }
+  void PrintBestParams() {
 		for(std::map<int,Sigma2Process *>::iterator it = procs.begin(); it != procs.end(); ++it) {
 			if(it->second->topo.GetEntries() > 0) {
 				cout << "Process " << it->second->getName() <<" (id="<<it->first<<")"<< endl;
@@ -123,6 +123,10 @@ private:
   //class to sellect the generation method
   TopoSelector TopoSel;
 
+  //bSlope in the t-distribution
+  const Double bSlope;
+
+
   //tag for exluclusive event
   bool isExclusive;
   
@@ -132,8 +136,8 @@ private:
   //without ISR (equivalent to standard KMR approach)
   bool WithoutEmissions;
 
-	//number of MPI
-	int nMPI;
+  //number of MPI
+  int nMPI;
 
   //weight for exclusive events
   Double weightEx;
@@ -144,8 +148,8 @@ private:
   //Transverse momenta of scattered protons
   Vec2 p1, p2;
 
-	//pdgID of "left" parton incoming to the shower
-	int id1;
+  //pdgID of "left" parton incoming to the shower
+  int id1;
 
   //Last Scale in Space-like shower
   Double lastScale, lastEmScale;
@@ -154,7 +158,7 @@ private:
   Double lumiFrac, xSecFrac, pExc;
 
   static void TransformMomenta(Pythia8::Vec4 pIn1, Pythia8::Vec4 pIn2, Pythia8::Vec4 &pOut1, Pythia8::Vec4 &pOut2, Double mass);
-	void ResetShowers(const Pythia8::Event& event);
+  void ResetShowers(const Pythia8::Event& event);
 
   static Pythia8::RotBstMatrix CreateTransformation(Double s, Double x1, Double x2, Vec2 pA, Vec2 pB,
                                          Pythia8::Vec4 &pAMod, Pythia8::Vec4 &pBMod, Double mass);

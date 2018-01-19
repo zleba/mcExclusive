@@ -2,6 +2,7 @@
 #define TopoSelector_H_
 
 #include "Basics.h"
+#include "KMRlumi.h"
 //#include "TH1D.h"
 
 class TopoSelector {
@@ -67,7 +68,8 @@ public:
 	}
 
 	int CalcType() const {
-		Double r = rand() / (RAND_MAX+0.);
+		//Double r = rand() / (RAND_MAX+0.);
+		Double r = KMRlumi::Uniform(0,1);
     int tt;
 		if( r <= probRest )
 			tt= -1;

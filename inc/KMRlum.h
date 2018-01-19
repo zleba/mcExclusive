@@ -59,6 +59,7 @@ private:
   Double x1,x2,s;
 
   Pythia8::BeamParticle *beamPtr;
+  static Pythia8::Rndm *rndmPtr;
 
 
 };

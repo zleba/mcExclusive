@@ -1,5 +1,6 @@
 #include "KMRlum.h"
 
+Pythia8::Rndm *KMRlum::rndmPtr = NULL;
 
 //KMR initialisation
 KMRlum::KMRlum(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb, Pythia8::BeamParticle *_beamPtr )
@@ -56,7 +57,8 @@ Double MyRand(unsigned int init= 99) {
 
 inline Double KMRlum::Uniform(Double a, Double b)
 {
-  return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  //return (  a +  (b-a) * rand() / (RAND_MAX + 0.0)  );
+  return (  a +  (b-a) * rndmPtr->flat() );
   //return (  a +  (b-a) * MyRand() );
 
 }

@@ -1,6 +1,6 @@
 #include "ColorReconection.h"
 #include "SigmaQCD.h"
-#include "KMRlum.h"
+#include "KMRlumi.h"
 
 #include <typeinfo>
 
@@ -413,7 +413,7 @@ bool ColorReconection::RandomEmissions(Sigma2Process *proc, vector<Branch > &lef
       //g -> g g
       if( bE->colIn  >0 && bE->acolIn>0 && bE->colOut>0 &&
           bE->acolOut>0 && bE->colEm >0 && bE->acolEm>0 ) {
-        if ( KMRlum::Uniform(0,1) > 0.5 ) {
+        if ( KMRlumi::Uniform(0,1) > 0.5 ) {
           bEnew->acolIn = bEnew->acolOut;
           bEnew->acolEm = bEnew->colOut;
           bEnew->colEm = ++lastCol;

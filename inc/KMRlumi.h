@@ -18,7 +18,7 @@ class KMRlumi {
 
 public:
 
-  KMRlumi(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb, Pythia8::BeamParticle *_beamPtr );
+  KMRlumi(Double sqrtS, Double qMin, Double alphaS, Double mc, Double mb, Double _bSlope, Pythia8::BeamParticle *_beamPtr, Pythia8::Rndm  *_rndmPtr);
 
   static Double Uniform(Double a, Double b);
   Double gluon(int id, Double x, Double q2 ) const;
@@ -59,6 +59,7 @@ private:
 
   Pythia8::BeamParticle *beamPtr;
   int idLeft, idRight;
+  static Pythia8::Rndm *rndmPtr;
 
 
 };

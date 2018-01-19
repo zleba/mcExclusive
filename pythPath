@@ -1,11 +1,11 @@
-pythInc = 
-pythLib = 
+pythInc = /home/radek/Dropbox/Lund/mcnet/pythia8New/pythia8212/include/
+pythLib = /home/radek/Dropbox/Lund/mcnet/pythia8New/pythia8212/lib/
 
 ifeq ("$(wildcard $(pythInc)/Pythia8/Pythia.h)","")
-    $(error Wrong destination: $(pythInc) for the Pythia includes)
+    $(error Wrong destination: $(pythInc) for the Pythia includes, change it in file "pythPath")
 endif
 
 ifeq ("$(wildcard $(pythLib)/libpythia8.a)","")
-    $(error Wrong destination: $(pythLib) for the Pythia library)
+    $(error Wrong destination: $(pythLib) for the Pythia library, change it in file "pythPath")
 endif
 
