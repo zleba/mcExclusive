@@ -12,3 +12,4 @@ The S2 can be calculated using Pythia's MPI or take from other program/paper.
 Beware of high sensitivity of the cross sections to the PDF behaviour in the low-scale region.
 
 The list of currently implemented processes is given in examples/standalone/dijets.cpp
+Note, that the produced events are weighted.
