@@ -1,0 +1,30 @@
+1) To install the package, please find-out the Pythia8 instalation directory
+   and include the modifyEventBeforeFSR method to the header file and the source file
+
+pythia8212/include/Pythia8/UserHooks.h:
+  virtual bool doVetoISREmission( int, const Event&, int ) {return false;} 
+  virtual void modifyEventBeforeFSR( Event& ){}                //This line is NEW
+  // Possibility to veto an emission in the FSR machinery.
+  virtual bool canVetoFSREmission() {return false;}
+
+
+pythia8212/src/PartonLevel.cc:
+    // End loop evolution down in pT from hard pT scale.
+    } while (pTmax > 0.  && (nBranchMax <= 0 || nBranch < nBranchMax) );
+    
+    
+    if(userHooksPtr != 0) userHooksPtr->modifyEventBeforeFSR( event ); //This line is NEW
+    
+    // Do all final-state emissions if not already considered above.
+    if (doFSRafterProcess && (nBranchMax <= 0 || nBranch < nBranchMax) ) {
+
+2) Recompile the Pythia library
+
+3) Write the paths to the Pythia8 in file "pythPath", it means edit the variables
+   pythInc and pythLib to point to the include directory and to the library directory
+
+4) Run "make" to compile the Add-On
+
+5) run "make" in examples/standalone/ to compile the example
+
+6) run "./dijets"

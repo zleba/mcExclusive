@@ -361,7 +361,7 @@ bool ExclusiveHooks::doVetoProcessLevel(Pythia8::Event& process)
 
 
 
-void ExclusiveHooks::modifyEventBeforFSR( Pythia8::Event &event )
+void ExclusiveHooks::modifyEventBeforeFSR( Pythia8::Event &event )
 {
 
   proc->PyCrossSection();

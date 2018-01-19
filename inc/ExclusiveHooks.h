@@ -28,7 +28,7 @@ class ExclusiveHooks : public Pythia8::UserHooks{
   virtual bool canVetoISREmission() {return true;}
   virtual bool doVetoISREmission( int sizeOld, const Pythia8::Event& event, int iSys);
 
-  virtual void modifyEventBeforFSR( Pythia8::Event &event );
+  virtual void modifyEventBeforeFSR( Pythia8::Event &event );
 
   virtual bool canReconnectResonanceSystems() { return  true; }
   virtual bool doReconnectResonanceSystems(int oldSizeEvent, Pythia8::Event& event);
