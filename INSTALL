@@ -1,14 +1,15 @@
 1) To install the package, please find-out the Pythia8 instalation directory
    and include the modifyEventBeforeFSR method to the header file and the source file
+   (tested with several Pythia's versions)
 
-pythia8212/include/Pythia8/UserHooks.h:
+pythia8230/include/Pythia8/UserHooks.h:
   virtual bool doVetoISREmission( int, const Event&, int ) {return false;} 
   virtual void modifyEventBeforeFSR( Event& ){}                //This line is NEW
   // Possibility to veto an emission in the FSR machinery.
   virtual bool canVetoFSREmission() {return false;}
 
 
-pythia8212/src/PartonLevel.cc:
+pythia8230/src/PartonLevel.cc:
     // End loop evolution down in pT from hard pT scale.
     } while (pTmax > 0.  && (nBranchMax <= 0 || nBranch < nBranchMax) );
     
