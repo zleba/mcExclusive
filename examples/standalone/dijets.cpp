@@ -47,7 +47,8 @@ int main()
     pythia.readString("Next:numberShowProcess  = 0");
     pythia.readString("Random:setSeed = on");
 
-    pythia.readString("PDF:pSet =  LHAPDF6:MMHT2014lo68cl");
+    //Use LO sets which have regular low-scale behaviour, alternatively e.g  "LHAPDF6:MMHT2014lo68cl"
+    pythia.readString("PDF:pSet =  13"); 
     pythia.readString("Beams:FrameType = 2");
     pythia.readString("Beams:idA = 2212");
     pythia.readString("Beams:idB = 2212");
