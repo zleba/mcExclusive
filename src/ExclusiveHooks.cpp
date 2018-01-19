@@ -241,8 +241,10 @@ bool ExclusiveHooks::initAfterBeams()
 
     const Double MCMIN  = 1.2;
     const Double MBMIN  = 4.0;
+    //const Double MTMIN  = 167.0;
     Double  mc = max( MCMIN, particleDataPtr->m0(4));
     Double  mb = max( MBMIN, particleDataPtr->m0(5));
+    //Double  mt = max( MTMIN, particleDataPtr->m0(6));
 
     HEPinfo::Init(particleDataPtr, coupSMPtr );
 
@@ -277,14 +279,33 @@ bool ExclusiveHooks::doVetoProcessLevel(Pythia8::Event& process)
     proc = procs[code];
   }
 
+  //cout << "RADEK output begin" << endl;
+  //process.list();
+  //cout << "RADEK output end" << endl;
+
   int idHard1 = process.size()-2;
   int idHard2 = process.size()-1;
 
+  if(code == 601 || code == 602) { //top production
+    for(idHard1  = 1; idHard1 < process.size(); ++idHard1)
+      if(process[idHard1].status() == -22) break;
+    for(idHard2  = idHard1+1; idHard2 < process.size(); ++idHard2)
+      if(process[idHard2].status() == -22) break;
+    if(idHard1 >= process.size() || idHard2 >= process.size()) {
+      cout << "Something wrong with partons identification" << endl;
+      exit(1);
+    }
+  }
+  //cout << "idHARD12 " << idHard1 << " " << idHard2 << endl;
+
+
+  /*
   if( process[idHard1].status() != 23 || process[idHard2].status() != 23) {
     process.list();
     cout << "The hard process badly identified" << endl;
     exit(1);
   }
+  */
   
 	//process.list();
 
@@ -296,7 +317,7 @@ bool ExclusiveHooks::doVetoProcessLevel(Pythia8::Event& process)
   proc->SetIdsOut(process[idHard1].id(), process[idHard2].id() );
 
   proc->SetSTUPhi(pyth->info.sHat(), pyth->info.tHat(), pyth->info.uHat(), pyth->info.phiHat() );
-	proc->SetMasses( 0, 0, pyth->info.m3Hat(), pyth->info.m4Hat() );
+  proc->SetMasses( 0, 0, pyth->info.m3Hat(), pyth->info.m4Hat() );
   proc->SetScaleAlphas(pyth->info.QRen(), pyth->info.alphaS(), pyth->info.alphaEM() );
 
 
@@ -336,9 +357,6 @@ bool ExclusiveHooks::doVetoProcessLevel(Pythia8::Event& process)
   return false;
 
 }
-
-
-
 
 
 
@@ -511,6 +529,7 @@ void ExclusiveHooks::modifyEventBeforFSR( Pythia8::Event &event )
 
   ColRec.StoreInColors(event);
 
+  //cout << "Event number -- after FSR : "<< pyth->info.getCounter(3) << endl;
   //event.list();
 
 	//cout <<"exWeight "<<setprecision(10)<< weightEx <<" "<<nMPI << endl;

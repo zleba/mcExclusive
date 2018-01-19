@@ -230,7 +230,7 @@ void ColorReconection::CopyColorsToEvent(Pythia8::Event &event,
   }
 
   int idOut1;
-  for(idOut1=0; idOut1<event.size()&&abs(event[idOut1].status())!=23; ++idOut1)
+  for(idOut1=0; idOut1<event.size()&&abs(event[idOut1].status())!=23 &&  (abs(event[idOut1].status())!=22  || abs(event[idOut1].id())!=6); ++idOut1)
     ;
   if(idOut1 == event.size() )
     return;
