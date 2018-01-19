@@ -76,7 +76,7 @@ int main()
 
     //if ISR switched to on, emissions in the Space-like shower are considered up to scale SpaceShower:pTmin, see arXiv:1608.03765, 
     //as it open new production chanel it fills the lower values in M12/MX distribution
-    pythia.readString("PartonLevel:ISR = on"); 
+    pythia.readString("PartonLevel:ISR = off"); 
                                                 
 
     pythia.readString("HadronLevel:all = off");
