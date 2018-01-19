@@ -3,6 +3,7 @@
 This Add-On to Pythia 8 allows to generate the Central Exclusive Production.
 It is based on UserHooks machinery.
 The installation instructions are described in the INSTALL file, at the current state, one needs to add 2 lines to the Pythia source code and recompile it before compiling this package.
+This modification has no effect until for standard Pythia running.
 
 For more information about the physics behind, see [arXiv:1608.03765], where the method is explained and some results are shown.
 In case of usage, please cite this paper.
