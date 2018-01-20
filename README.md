@@ -17,3 +17,6 @@ Beware of high sensitivity of the cross sections to the PDF behaviour in the low
 
 The list of currently implemented processes is given in `examples/standalone/dijets.cpp`
 Note, that the produced events are weighted.
+
+https://indico.cern.ch/event/544727/contributions/2377668/attachments/1384547/2106269/ExclProduction.pdf
+http://inspirehep.net/record/1481055
