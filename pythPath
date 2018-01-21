@@ -1,11 +1,19 @@
-pythInc =
-pythLib = 
+pythInc = /nfs/dust/cms/user/zlebcr/powheg/armando/testExc/pythiaTest/pythiaLocal/include/
+pythLib = /nfs/dust/cms/user/zlebcr/powheg/armando/testExc/pythiaTest/pythiaLocal/lib/
 
 ifeq ("$(wildcard $(pythInc)/Pythia8/Pythia.h)","")
-    $(error Wrong destination: $(pythInc) for the Pythia includes, change it in file "pythPath")
+    $(error Compilation error: Invalid Pythia include path "$(pythInc)", change it in file pythPath)
 endif
 
 ifeq ("$(wildcard $(pythLib)/libpythia8.a)","")
-    $(error Wrong destination: $(pythLib) for the Pythia library, change it in file "pythPath")
+    $(error Compilation error: Invalid Pythia library path "$(pythLib)", change it in file pythPath)
 endif
 
+
+ifeq ("$(shell grep -c  modifyEventBeforeFSR  $(pythInc)/Pythia8/UserHooks.h )", "0")
+    $(error Compilation error: Function modifyEventBeforeFSR not added to "$(pythInc)/Pythia8/UserHooks.h", see INSTALL file for instructions)
+endif
+
+ifeq ("$(shell nm  $(pythLib)/libpythia8.a | grep -c modifyEventBeforeFSR)", "0")
+    $(error Compilation error: Function modifyEventBeforeFSR not found in "$(pythLib)/libpythia8.a", please add it to file src/PartonLevel.cc and recompile Pythia, see INSTALL file for instructions)
+endif
